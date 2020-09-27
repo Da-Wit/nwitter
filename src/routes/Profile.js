@@ -17,7 +17,6 @@ export default ({ userObj }) => {
       .get();
     console.log(nweets.docs.map((doc) => doc.data()));
   };
-
   useEffect(() => {
     getMyNweets();
   });
