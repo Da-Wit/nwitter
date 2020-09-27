@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Router from "components/Router";
 import { authService } from "Icebase";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
+  const [init, setInit] = useState(false);
+  const [userObj, setUserObj] = useState(null);
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user) {
+        setUserObj(user);
+      } else {
+      }
+      setInit(true);
+    });
+  }, []);
   return (
     <>
-      <Router isLoggedIn={isLoggedIn} />
-      <footer>&copy; {new Date().getFullYear()} Nwitter</footer>
+      {init ? (
+        <Router isLoggedIn={Boolean(userObj)} userObj={userObj} />
+      ) : (
+        "Initializing..."
+      )}
     </>
   );
 }
